@@ -8,7 +8,6 @@ import tseslint from 'typescript-eslint'
 import stylistic from '@stylistic/eslint-plugin'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
-
 export default defineConfig([
   globalIgnores(['dist']),
   {
