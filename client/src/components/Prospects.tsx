@@ -1,32 +1,35 @@
+import type { Prospect } from "@shared/types";
 import { useQuery } from "@tanstack/react-query";
 
-interface Prospect {
-  id: string;
-  email: string;
-  name: string | null;
-  company: string | null;
-  jobTitle: string | null;
-  status: string | null;
-  notes: string | null;
-  createdAt: string | null;
-};
-
 const Prospects = () => {
-  const { isPending, error, data } = useQuery<Prospect[], Error>({
-    queryKey: ['getProspects'],
-    queryFn: async () => {
-      const response = await fetch('/api/prospects');
-      const data = await response.json() as Prospect[];
+  const fetchProspects = async () => {
+    const response = await fetch('/api/prospects');
+    const allProspects = await response.json() as Prospect[];
 
-      return data;
-    },
+    return allProspects;
+  };
+
+  const { isLoading, error, data: prospects } = useQuery({
+    queryKey: ['getProspects'],
+    queryFn: fetchProspects
   });
 
-  if (isPending) return 'Loading...';
+  if (isLoading) return 'Loading...';
 
   if (error) return 'Something went wrong';
 
-  return JSON.stringify(data, null, 2);
+  return !prospects ? (
+    <p>no prospects</p>
+  ) : (
+    <ul>
+      {prospects.map((prospect) => {
+        return (
+          <li key={prospect.id}>{prospect.name}</li>
+        );
+      })}
+    </ul>
+  );
+
 };
 
 export default Prospects;
