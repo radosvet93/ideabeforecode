@@ -14,6 +14,4 @@ export const prospectsTable = pgTable("prospects", {
   createdAt: timestamp().defaultNow()
 });
 
-export type Prospect = typeof prospectsTable.$inferSelect;
-
 export const listProspects = () => db.select().from(prospectsTable)
