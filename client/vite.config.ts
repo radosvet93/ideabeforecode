@@ -15,10 +15,5 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:3000',
     }
-  },
-  resolve: {
-    alias: {
-      '@shared': path.resolve(__dirname, '../shared')
-    }
   }
 });

@@ -15,14 +15,8 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
-    "paths": {
-      "@shared/*": [
-        "../shared/*"
-      ]
-    }
   },
   "include": [
-    "src",
-    "../shared"
+    "src"
   ]
 }
