@@ -1,10 +1,14 @@
-import type { Prospect } from "@shared/types";
 import { useQuery } from "@tanstack/react-query";
+
+interface ProspectResponse {
+  id: string,
+  name: string
+}
 
 const Prospects = () => {
   const fetchProspects = async () => {
     const response = await fetch('/api/prospects');
-    const allProspects = await response.json() as Prospect[];
+    const allProspects = await response.json() as ProspectResponse[];
 
     return allProspects;
   };
