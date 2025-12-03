@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import ProjectForm from "./ProjectForm";
 import ProjectCard from "./ProjectCard";
+import { Link } from "@tanstack/react-router";
 
 export interface Project {
   id: string,
@@ -41,16 +42,24 @@ const Projects = ({ projects, onCreateProject }: ProjectsProps) => {
         )}
 
         {projects.map((project) => (
-          <ProjectCard
+          <Link
             key={project.id}
-            id={project.id}
-            name={project.name}
-            description={project.description}
-            createdAt={project.createdAt}
-          />
+            to="/projects/$projectId"
+            params={{
+              projectId: project.id
+            }}
+          >
+            <ProjectCard
+              id={project.id}
+              name={project.name}
+              description={project.description}
+              createdAt={project.createdAt}
+            >
+            </ProjectCard>
+          </Link>
         ))}
 
-      </div>
+      </div >
 
       {
         projects.length === 0 && !isCreating && (

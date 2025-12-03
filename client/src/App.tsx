@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 const queryClient = new QueryClient();
 
@@ -14,6 +15,7 @@ const App = () => {
           <Dashboard />
         </div>
       </div>
+      <TanStackRouterDevtools />
     </QueryClientProvider>
   );
 };

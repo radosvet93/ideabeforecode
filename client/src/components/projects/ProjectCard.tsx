@@ -22,6 +22,7 @@ const ProjectCard = ({ id, name, description, createdAt }: Project) => {
             variant="ghost"
             size="icon"
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               // TODO: Delete project from DB
             }}
