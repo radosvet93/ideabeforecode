@@ -1,0 +1,8 @@
+{
+	"scripts": {
+		"start": "concurrently -n API,client --prefixColors green,blue \"cd server && pnpm dev\" \"cd client && pnpm dev\""
+	},
+	"devDependencies": {
+		"concurrently": "^9.2.1"
+	}
+}
