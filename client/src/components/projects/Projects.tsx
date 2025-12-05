@@ -41,7 +41,7 @@ const Projects = ({ projects, onCreateProject }: ProjectsProps) => {
           </Card>
         )}
 
-        {projects.map((project) => (
+        {projects?.map((project) => (
           <Link
             key={project.id}
             to="/projects/$projectId"
@@ -62,7 +62,7 @@ const Projects = ({ projects, onCreateProject }: ProjectsProps) => {
       </div >
 
       {
-        projects.length === 0 && !isCreating && (
+        projects?.length === 0 && !isCreating && (
           <Card className="py-16 px-4 text-center">
             <Plus className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No projects yet</h3>
