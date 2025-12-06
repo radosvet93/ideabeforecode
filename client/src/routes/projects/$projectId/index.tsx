@@ -29,7 +29,7 @@ function Project() {
   console.log('data', data);
   return (
     <div className="min-h-screen bg-linear-to-br from-background via-background to-muted">
-      <Header />
+      <Header hasBackButton />
       <div className="p-4">
         <div className="space-y-8">
           {/* Header */}
