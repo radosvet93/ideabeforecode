@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import { router as projectsRouter } from './features/projects';
 import { router as leadsRouter } from './features/leads'
+import { router as emailsRouter } from './features/emails'
 
 dotenv.config();
 const app = express();
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use("/api/projects", projectsRouter);
 app.use("/api/leads", leadsRouter);
+app.use("/api/emails", emailsRouter);
 
 app.use(cors());
 app.use(express.json());
