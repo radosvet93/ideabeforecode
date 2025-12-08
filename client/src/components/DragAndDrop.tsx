@@ -18,7 +18,7 @@ interface DragAndDropProps {
 }
 
 export function DragAndDrop({ leads, onUpdateLead }: DragAndDropProps) {
-  const [draggedLead, setDraggedLead] = useState(null);
+  const [draggedLead, setDraggedLead] = useState<Lead | null>(null);
 
   const leadsByStatus = PIPELINE_STAGES.map((stage) => ({
     ...stage,
@@ -72,8 +72,8 @@ export function DragAndDrop({ leads, onUpdateLead }: DragAndDropProps) {
                     <GripVertical className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium truncate">{lead.name}</h4>
-                      <p className="text-sm text-muted-foreground truncate m-0">{lead.company || lead.email}</p>
-                      {lead.jobTitle && <p className="text-xs text-muted-foreground m-0">{lead.jobTitle}</p>}
+                      <p className="text-sm text-muted-foreground m-0">{lead.notes}</p>
+                      <p className="text-xs italic text-muted-foreground m-0">{lead.jobTitle} at {lead.company}</p>
                     </div>
                   </div>
                 </Card>
