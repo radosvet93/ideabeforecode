@@ -9,12 +9,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/api/projects", projectsRouter);
 app.use("/api/leads", leadsRouter);
 app.use("/api/emails", emailsRouter);
-
-app.use(cors());
-app.use(express.json());
 
 app.listen(PORT, () => {
   console.log(`Listening to http://localhost:${PORT}`);

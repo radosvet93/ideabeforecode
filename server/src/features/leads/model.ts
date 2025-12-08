@@ -1,10 +1,14 @@
 import { db } from "../../db/setup";
 import { pgTable, text, uuid, timestamp, pgEnum } from 'drizzle-orm/pg-core';
-import { createSelectSchema } from 'drizzle-zod';
+import { createSelectSchema, createUpdateSchema } from 'drizzle-zod';
 import { projectsTable } from "../projects/model";
 import { eq } from "drizzle-orm";
 
-export const statusEnum = pgEnum("status", ["new", "contacted", "interested", "declined", "closed"]);
+export const statusEnumValues = ["new", "contacted", "interested", "declined", "closed"] as const;
+
+export type Status = typeof statusEnumValues[number];
+
+export const statusEnum = pgEnum("status", statusEnumValues);
 
 export const leadsTable = pgTable("leads", {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -21,9 +25,12 @@ export const leadsTable = pgTable("leads", {
 });
 
 export const leadsSelectSchema = createSelectSchema(leadsTable)
+export const leadsUpdateSchema = createUpdateSchema(leadsTable)
 
 export const listLeads = () => db.select().from(leadsTable)
 
 export const listLeadsByProject = (projectId: string) => db.select()
   .from(leadsTable)
   .where(eq(leadsTable.projectId, projectId));
+
+export const updateLeadStatus = (id: string, status: Status) => db.update(leadsTable).set({ status }).where(eq(leadsTable.id, id)).returning();
