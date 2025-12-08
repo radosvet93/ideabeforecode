@@ -5,11 +5,11 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const PIPELINE_STAGES = [
-  { id: "new", label: "New", color: "bg-slate-100 dark:bg-slate-800" },
-  { id: "contacted", label: "Contacted", color: "bg-blue-100 dark:bg-blue-900" },
-  { id: "interested", label: "Interested", color: "bg-purple-100 dark:bg-purple-900" },
-  { id: "declined", label: "Declined", color: "bg-red-100 dark:bg-red-900" },
-  { id: "closed", label: "Closed", color: "bg-orange-100 dark:bg-orange-900" },
+  { id: "new", label: "New", color: "border-slate-200" },
+  { id: "contacted", label: "Contacted", color: "border-blue-200" },
+  { id: "interested", label: "Interested", color: "border-purple-200" },
+  { id: "declined", label: "Declined", color: "border-red-200" },
+  { id: "closed", label: "Closed", color: "border-green-200" },
 ] as const;
 
 interface DragAndDropProps {
@@ -49,12 +49,12 @@ export function DragAndDrop({ leads, onUpdateLead }: DragAndDropProps) {
         {leadsByStatus.map((column) => (
           <div
             key={column.id}
-            className="shrink-0 w-80"
+            className={`p-4 rounded-2xl shrink-0 w-50 bg-slate-50`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
           >
             <div className="mb-4">
-              <h3 className="font-semibold flex items-center gap-2">
+              <h3 className="text-sm font-semibold flex items-center gap-2">
                 {column.label}
                 <Badge variant="secondary">{column.leads.length}</Badge>
               </h3>
@@ -66,14 +66,14 @@ export function DragAndDrop({ leads, onUpdateLead }: DragAndDropProps) {
                   key={lead.id}
                   draggable
                   onDragStart={(e) => handleDragStart(e, lead)}
-                  className="p-4 cursor-move hover:shadow-lg transition-shadow bg-card"
+                  className={`p-2 cursor-move hover:shadow-lg transition-shadow border-l-4 ${column.color}`}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-2">
                     <GripVertical className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium truncate">{lead.name}</h4>
-                      <p className="text-sm text-muted-foreground truncate">{lead.company || lead.email}</p>
-                      {lead.jobTitle && <p className="text-xs text-muted-foreground mt-1">{lead.jobTitle}</p>}
+                      <p className="text-sm text-muted-foreground truncate m-0">{lead.company || lead.email}</p>
+                      {lead.jobTitle && <p className="text-xs text-muted-foreground m-0">{lead.jobTitle}</p>}
                     </div>
                   </div>
                 </Card>

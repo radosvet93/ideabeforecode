@@ -29,7 +29,7 @@ function Project() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-background via-background to-muted">
+    <div className="min-h-screen">
       <Header hasBackButton />
       <div className="p-4">
         <div className="space-y-8">

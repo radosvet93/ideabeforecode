@@ -4,7 +4,7 @@ import Header from "./components/Header";
 const App = () => {
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-background via-background to-muted">
+    <div className="min-h-screen">
       <Header />
       <div className="p-4">
         <Dashboard />
