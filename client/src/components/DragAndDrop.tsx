@@ -8,8 +8,8 @@ const PIPELINE_STAGES = [
   { id: "new", label: "New", color: "border-slate-200" },
   { id: "contacted", label: "Contacted", color: "border-blue-200" },
   { id: "interested", label: "Interested", color: "border-purple-200" },
-  { id: "declined", label: "Declined", color: "border-red-200" },
   { id: "closed", label: "Closed", color: "border-green-200" },
+  { id: "declined", label: "Declined", color: "border-red-200" },
 ] as const;
 
 interface DragAndDropProps {
@@ -71,8 +71,8 @@ export function DragAndDrop({ leads, onUpdateLead }: DragAndDropProps) {
                   <div className="flex items-start gap-2">
                     <GripVertical className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-medium truncate">{lead.name}</h4>
-                      <p className="text-sm text-muted-foreground m-0">{lead.notes}</p>
+                      <h4 className="font-medium">{lead.name}</h4>
+                      <p className="text-sm text-muted-foreground m-0 line-clamp-3">{lead.notes}</p>
                       <p className="text-xs italic text-muted-foreground m-0">{lead.jobTitle} at {lead.company}</p>
                     </div>
                   </div>

@@ -4,7 +4,7 @@ import { createSelectSchema, createUpdateSchema } from 'drizzle-zod';
 import { projectsTable } from "../projects/model";
 import { eq } from "drizzle-orm";
 
-export const statusEnumValues = ["new", "contacted", "interested", "declined", "closed"] as const;
+export const statusEnumValues = ["new", "contacted", "interested", "closed", "declined"] as const;
 
 export type Status = typeof statusEnumValues[number];
 

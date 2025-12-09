@@ -1,4 +1,4 @@
-export type StatusUnion = "new" | "contacted" | "interested" | "declined" | "closed";
+export type StatusUnion = "new" | "contacted" | "interested" | "closed" | "declined";
 
 export interface Project {
   id: string,
