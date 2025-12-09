@@ -1,18 +1,71 @@
+import z from 'zod';
 import { createFileRoute } from '@tanstack/react-router';
 import { Plus } from 'lucide-react';
 import { DragAndDrop } from '@/components/DragAndDrop';
 import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { AnalyticsCardForProject } from '@/components/projects/AnalyticsCardForProject';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useGetSingleProject } from '@/hooks/useGetSingleProject';
 import { useUpdateLeadStatus } from '@/hooks/useUpdatedLeadStatus';
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { useForm } from '@tanstack/react-form';
+import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from '@/components/ui/input-group';
 import type { Lead } from '@/types';
+import { useState } from 'react';
 
 export const Route = createFileRoute('/projects/$projectId/')({
   component: Project,
 });
 
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters.")
+    .max(32, "Name must be at most 32 characters."),
+  company: z.string(),
+  email: z.email(),
+  jobTitle: z.string(),
+  notes: z.string().max(100, "Notes must be at most 100 characters."),
+});
+
 function Project() {
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      company: "",
+      email: "",
+      jobTitle: "",
+      notes: "",
+    },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: ({ value }) => {
+      console.log('sumbitting', value);
+
+      // TODO: create new lead, if all good, close dialog
+      try {
+
+        setOpen(false);
+        form.reset();
+      } catch (error) {
+        console.log('error', error);
+      }
+    }
+  });
+  const [open, setOpen] = useState(false);
+
   const { projectId } = Route.useParams();
 
   const { data: project, isLoading } = useGetSingleProject(projectId);
@@ -48,7 +101,171 @@ function Project() {
               <p className='text-muted-foreground mt-1'>Drag leads between stages to track progress</p>
             </div>
 
-            <Button><Plus />Add Lead</Button>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button><Plus />Add Lead</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Adding new lead</DialogTitle>
+                  <DialogDescription className='mt-0'>The lead will be added to the new column</DialogDescription>
+                </DialogHeader>
+
+                <form
+                  className='space-y-6'
+                  onSubmit={(e) => {
+                    e.preventDefault();
+
+                    void form.handleSubmit();
+                  }}
+                >
+                  <FieldGroup>
+                    <form.Field
+                      name="name"
+                      children={(field) => {
+                        const isInvalid =
+                          field.state.meta.isTouched && !field.state.meta.isValid;
+                        return (
+                          <Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                            <Input
+                              id={field.name}
+                              name={field.name}
+                              value={field.state.value}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(e.target.value)}
+                              aria-invalid={isInvalid}
+                              placeholder="Name"
+                              autoComplete="off"
+                            />
+                            {isInvalid && (
+                              <FieldError errors={field.state.meta.errors} />
+                            )}
+                          </Field>
+                        );
+                      }}
+                    />
+                    <form.Field
+                      name="company"
+                      children={(field) => {
+                        const isInvalid =
+                          field.state.meta.isTouched && !field.state.meta.isValid;
+                        return (
+                          <Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Company</FieldLabel>
+                            <Input
+                              id={field.name}
+                              name={field.name}
+                              value={field.state.value}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(e.target.value)}
+                              aria-invalid={isInvalid}
+                              placeholder="Acme"
+                              autoComplete="off"
+                            />
+                            {isInvalid && (
+                              <FieldError errors={field.state.meta.errors} />
+                            )}
+                          </Field>
+                        );
+                      }}
+                    />
+                    <form.Field
+                      name="email"
+                      children={(field) => {
+                        const isInvalid =
+                          field.state.meta.isTouched && !field.state.meta.isValid;
+                        return (
+                          <Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                            <Input
+                              id={field.name}
+                              name={field.name}
+                              value={field.state.value}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(e.target.value)}
+                              aria-invalid={isInvalid}
+                              placeholder="hello@example.com"
+                              autoComplete="off"
+                              type='email'
+                            />
+                            {isInvalid && (
+                              <FieldError errors={field.state.meta.errors} />
+                            )}
+                          </Field>
+                        );
+                      }}
+                    />
+                    <form.Field
+                      name="jobTitle"
+                      children={(field) => {
+                        const isInvalid =
+                          field.state.meta.isTouched && !field.state.meta.isValid;
+                        return (
+                          <Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Job Title</FieldLabel>
+                            <Input
+                              id={field.name}
+                              name={field.name}
+                              value={field.state.value}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(e.target.value)}
+                              aria-invalid={isInvalid}
+                              placeholder="CEO"
+                              autoComplete="off"
+                            />
+                            {isInvalid && (
+                              <FieldError errors={field.state.meta.errors} />
+                            )}
+                          </Field>
+                        );
+                      }}
+                    />
+                    <form.Field
+                      name="notes"
+                      children={(field) => {
+                        const isInvalid =
+                          field.state.meta.isTouched && !field.state.meta.isValid;
+                        return (
+                          <Field data-invalid={isInvalid}>
+                            <FieldLabel htmlFor={field.name}>Notes</FieldLabel>
+                            <InputGroup>
+                              <InputGroupTextarea
+                                id={field.name}
+                                name={field.name}
+                                value={field.state.value}
+                                onBlur={field.handleBlur}
+                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => field.handleChange(e.target.value)}
+                                placeholder="Notes about the lead"
+                                rows={2}
+                                className="min-h-24 resize-none"
+                                aria-invalid={isInvalid}
+                              />
+                              <InputGroupAddon align="block-end">
+                                <InputGroupText className="tabular-nums">
+                                  {field.state.value.length}/100 characters
+                                </InputGroupText>
+                              </InputGroupAddon>
+                            </InputGroup>
+                            {isInvalid && (
+                              <FieldError errors={field.state.meta.errors} />
+                            )}
+                          </Field>
+                        );
+                      }}
+                    />
+                  </FieldGroup>
+                  <DialogFooter>
+                    <DialogClose asChild>
+
+                      <Button variant={'outline'}>Cancel</Button>
+                    </DialogClose>
+                    <Button type='submit'>Submit</Button>
+                  </DialogFooter>
+                </form>
+
+              </DialogContent>
+            </Dialog>
           </div>
 
           {/* DnD Pipeline */}
@@ -56,6 +273,6 @@ function Project() {
 
         </div>
       </div>
-    </div>
+    </div >
   );
 }
