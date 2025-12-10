@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { LeadsPipeline } from '@/components/LeadsPipeline';
 import Header from '@/components/Header';
 import { AnalyticsCardForProject } from '@/components/projects/AnalyticsCardForProject';
@@ -7,6 +7,8 @@ import { useGetSingleProject } from '@/hooks/project/useGetSingleProject';
 import { useUpdateLeadStatus } from '@/hooks/lead/useUpdatedLeadStatus';
 import type { Lead } from '@/types';
 import { LeadForm } from '@/components/LeadForm';
+import { Button } from '@/components/ui/button';
+import { Mail } from 'lucide-react';
 
 export const Route = createFileRoute('/projects/$projectId/')({
   component: ProjectRoute,
@@ -45,7 +47,18 @@ function ProjectRoute() {
               <p className='text-muted-foreground mt-1'>Drag leads between stages to track progress</p>
             </div>
 
-            <LeadForm projectId={projectId} />
+            <div className='space-x-2'>
+              <LeadForm projectId={projectId} />
+              <Link
+                key={project.id}
+                to="/emails/$projectId"
+                params={{
+                  projectId: project.id
+                }}
+              >
+                <Button variant={'outline'}><Mail />Generate Email</Button>
+              </Link>
+            </div>
           </div>
 
           <LeadsPipeline leads={leads} onUpdateLead={handleUpdateLead} />
