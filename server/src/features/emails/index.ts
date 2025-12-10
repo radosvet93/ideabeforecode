@@ -1,18 +1,6 @@
-import { Router, type Response } from "express";
-import { listEmails, emailsSelectSchema } from "./model";
+import { Router } from "express";
+import { getEmailsHandler } from "./controller";
 
 export const router = Router();
 
-router.get("/", async ({ res }: { res: Response }) => {
-  const emailDB = await listEmails();
-
-  const emailDto = emailDB.map(row => emailsSelectSchema.parse({
-    id: row.id,
-    content: row.content,
-    tone: row.tone,
-    leadId: row.leadId,
-    createdAt: row.createdAt
-  }))
-
-  res.json(emailDto);
-});
+router.get("/", getEmailsHandler);
