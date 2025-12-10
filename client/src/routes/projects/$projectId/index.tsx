@@ -56,18 +56,13 @@ function ProjectRoute() {
       onSubmit: formSchema,
     },
     onSubmit: ({ value }) => {
-      try {
-        createLead({
-          ...value,
-          projectId
-        });
+      createLead({
+        ...value,
+        projectId
+      });
 
-        setOpen(false);
-        form.reset();
-
-      } catch (error) {
-        console.log('error', error);
-      }
+      setOpen(false);
+      form.reset();
     }
   });
   const [open, setOpen] = useState(false);

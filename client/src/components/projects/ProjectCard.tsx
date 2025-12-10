@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useGetSingleProject } from "@/hooks/useGetSingleProject";
+import { useDeleteProject } from "@/hooks/useDeleteProject";
 
 interface ProjectCardProps {
   id: string
@@ -10,6 +11,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ id }: ProjectCardProps) => {
   const { data: project } = useGetSingleProject(id);
+  const { mutate: deleteProject } = useDeleteProject();
 
   return (
     <Card
@@ -31,8 +33,8 @@ const ProjectCard = ({ id }: ProjectCardProps) => {
             size="icon"
             onClick={(e) => {
               e.preventDefault();
-              e.stopPropagation();
-              // TODO: Delete project from DB
+
+              deleteProject(id);
             }}
             className="text-destructive"
           >

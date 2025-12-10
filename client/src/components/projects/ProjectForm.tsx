@@ -23,7 +23,7 @@ const formSchema = z.object({
 });
 
 const ProjectForm = () => {
-  const { mutate: createProject, isSuccess } = useCreateProject();
+  const { mutate: createProject } = useCreateProject();
   const [open, setOpen] = useState(false);
 
   const form = useForm({
@@ -37,10 +37,8 @@ const ProjectForm = () => {
     onSubmit: ({ value }) => {
       createProject(value);
 
-      if (isSuccess) {
-        setOpen(false);
-        form.reset();
-      }
+      setOpen(false);
+      form.reset();
     }
   });
 
