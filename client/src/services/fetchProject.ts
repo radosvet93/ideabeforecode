@@ -1,8 +1,4 @@
+import ky from "ky";
 import type { ProjectLeads } from "@/types";
 
-export const fetchProject = async (id: string) => {
-  const response = await fetch(`/api/projects/${id}`);
-  const singleProject = await response.json() as ProjectLeads;
-
-  return singleProject;
-};
+export const fetchProject = async (id: string) => await ky<ProjectLeads>(`/api/projects/${id}`).json();

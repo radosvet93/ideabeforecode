@@ -1,10 +1,7 @@
+import ky from 'ky';
+
 export const deleteLead = async (id: string) => {
-  const res = await fetch(`/api/leads/${id}`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-  });
+  const deleteResponse = await ky.delete(`/api/leads/${id}`);
 
-  if (!res.ok) throw new Error('Failed to delete lead');
-
-  return res.status;
+  return deleteResponse.status;
 };

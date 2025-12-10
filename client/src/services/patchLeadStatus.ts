@@ -1,13 +1,5 @@
 import type { Lead } from "@/types";
+import ky from "ky";
 
-export const patchLeadStatus = async (id: string, status: Lead['status']): Promise<Lead> => {
-  const res = await fetch(`/api/leads/${id}/status`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status }),
-  });
-
-  if (!res.ok) throw new Error('Failed to update lead');
-
-  return res.json() as Promise<Lead>;
-};
+export const patchLeadStatus = async (id: string, status: Lead['status']) =>
+  await ky.patch<Lead>(`/api/leads/${id}/status`, { json: status }).json();
