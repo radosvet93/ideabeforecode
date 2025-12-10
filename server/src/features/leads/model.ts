@@ -39,3 +39,5 @@ export const listLeadsByProject = (projectId: string) => db.select()
   .where(eq(leadsTable.projectId, projectId));
 
 export const updateLeadStatus = (id: string, status: Status) => db.update(leadsTable).set({ status }).where(eq(leadsTable.id, id)).returning();
+
+export const deleteLead = (id: string) => db.delete(leadsTable).where(eq(leadsTable.id, id)).returning();

@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import { createLead, leadsSelectSchema, listLeads, updateLeadStatus } from "./model";
+import { createLead, deleteLead, leadsSelectSchema, listLeads, updateLeadStatus } from "./model";
 import { leadCreateSchema, leadStatusUpdateSchema } from "./schema";
 import { formatZodErrors } from "src/utils/validators";
 import type { Request, Response } from "express";
@@ -59,5 +59,21 @@ export const patchLeadStatusHandler = async (req: Request, res: Response) => {
     }
 
     res.status(500).json({ error: "Failed to update lead status." });
+  }
+}
+
+export const deleteLeadHandler = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    const [deleted] = await deleteLead(id);
+
+    if (!deleted) {
+      return res.status(404).json({ error: "Lead not found." });
+    }
+
+    return res.status(204).send();
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to delete lead." });
   }
 }
