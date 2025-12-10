@@ -9,6 +9,7 @@ import { Dialog, DialogClose, DialogFooter, DialogHeader, DialogContent, DialogD
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Card } from "@/components/ui/card";
 import { Plus } from "lucide-react";
+import { useCreateProject } from '@/hooks/useCreateProject';
 
 const formSchema = z.object({
   name: z
@@ -22,6 +23,7 @@ const formSchema = z.object({
 });
 
 const ProjectForm = () => {
+  const { mutate: createProject, isSuccess } = useCreateProject();
   const [open, setOpen] = useState(false);
 
   const form = useForm({
@@ -33,17 +35,11 @@ const ProjectForm = () => {
       onSubmit: formSchema,
     },
     onSubmit: ({ value }) => {
-      try {
-        console.log('value', value);
-        // createProject({
-        //   ...value
-        // });
+      createProject(value);
 
+      if (isSuccess) {
         setOpen(false);
         form.reset();
-
-      } catch (error) {
-        console.log('error', error);
       }
     }
   });

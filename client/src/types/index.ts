@@ -35,3 +35,4 @@ export interface Email {
 }
 
 export type CreateLeadPayload = Omit<Lead, 'id' | 'status' | 'createdAt'>;
+export type CreateProjectPayload = Omit<Project, 'id' | 'createdAt'>;

@@ -26,7 +26,7 @@ import { useState } from 'react';
 import { useCreateLead } from '@/hooks/useCreateLead';
 
 export const Route = createFileRoute('/projects/$projectId/')({
-  component: Project,
+  component: ProjectRoute,
 });
 
 const formSchema = z.object({
@@ -40,7 +40,7 @@ const formSchema = z.object({
   notes: z.string().max(100, "Notes must be at most 100 characters."),
 });
 
-function Project() {
+function ProjectRoute() {
   const { mutate: createLead } = useCreateLead();
   const { projectId } = Route.useParams();
 
