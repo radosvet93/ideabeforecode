@@ -1,8 +1,9 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db/setup";
 import { pgTable, text, uuid, timestamp } from 'drizzle-orm/pg-core';
-import { createSelectSchema } from 'drizzle-zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { leadsTable } from "../leads/model";
+import type z from "zod";
 
 export const projectsTable = pgTable("projects", {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -12,6 +13,9 @@ export const projectsTable = pgTable("projects", {
 });
 
 export const projectsSelectSchema = createSelectSchema(projectsTable)
+export const projectInsertSchema = createInsertSchema(projectsTable)
+
+export type ProjectInsertInput = z.infer<typeof projectInsertSchema>;
 
 export const listProjects = () => db.select().from(projectsTable)
 export const projectWithLeads = (id: string) =>
@@ -37,3 +41,5 @@ export const projectWithLeads = (id: string) =>
     .from(projectsTable)
     .leftJoin(leadsTable, eq(leadsTable.projectId, projectsTable.id))
     .where(eq(projectsTable.id, id));
+
+export const createProject = (project: ProjectInsertInput) => db.insert(projectsTable).values(project).returning();

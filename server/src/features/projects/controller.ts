@@ -1,7 +1,10 @@
 import type { Request, Response } from 'express';
-import { listProjects, projectsSelectSchema, projectWithLeads } from "./model";
+import { createProject, listProjects, projectsSelectSchema, projectWithLeads } from "./model";
 import { leadsSelectSchema } from '../leads/model';
 import { countEmailsByProject } from '../emails/model';
+import { ZodError } from 'zod';
+import { formatZodErrors } from 'src/utils/validators';
+import { projectCreateSchema } from './schema';
 
 export const getProjectsHandler = async (_req: Request, res: Response) => {
   const projectDB = await listProjects();
@@ -40,5 +43,24 @@ export const getProjectByIdHandler = async (req: Request<{ id: string }>, res: R
 
   } catch (err) {
     return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export const createProjectHandler = async (req: Request, res: Response) => {
+  try {
+    const parsed = projectCreateSchema.parse(req.body);
+
+    const [created] = await createProject(parsed);
+    const createdDto = projectsSelectSchema.parse(created);
+
+    res.status(201).json(createdDto);
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        errors: formatZodErrors(error)
+      });
+    }
+
+    res.status(500).json({ error: "Failed to create lead." });
   }
 }
