@@ -56,7 +56,7 @@ export function DragAndDrop({ leads, onUpdateLead }: DragAndDropProps) {
         {leadsByStatus.map((column) => (
           <div
             key={column.id}
-            className={`p-4 rounded-2xl shrink-0 w-50 bg-slate-50`}
+            className={`p-4 rounded-2xl flex-1 w-50 bg-slate-50`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, column.id)}
           >

@@ -83,7 +83,7 @@ function ProjectRoute() {
   return (
     <div className="min-h-screen">
       <Header hasBackButton />
-      <div className="p-4">
+      <div className="p-4 container mx-auto">
         <div className="space-y-8">
           {/* Header */}
           <div>

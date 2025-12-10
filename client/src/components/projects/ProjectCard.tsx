@@ -13,6 +13,8 @@ const ProjectCard = ({ id }: ProjectCardProps) => {
   const { data: project } = useGetSingleProject(id);
   const { mutate: deleteProject } = useDeleteProject();
 
+  const closedLeads = project?.leads.filter(lead => lead.status === 'closed').length;
+
   return (
     <Card
       key={id}
@@ -42,19 +44,23 @@ const ProjectCard = ({ id }: ProjectCardProps) => {
           </Button>
         </div>
 
-        {project?.description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">{project.description}</p>
-        )}
+        <p className="text-sm text-muted-foreground line-clamp-2">{project?.description}</p>
 
-        <div className="flex gap-4 pt-2 border-t border-border">
-          <div>
+        <div className="flex justify-between pt-2 border-t border-border">
+          <div className="flex flex-col items-center">
             <p className="text-xs text-muted-foreground">Leads</p>
-            <p className="text-lg font-semibold">{project?.leads?.length}</p>
+            <p className="text-lg m-0 font-semibold">{project?.leads?.length}</p>
           </div>
-          <div>
+          <div className="flex flex-col items-center">
             <p className="text-xs text-muted-foreground">Emails</p>
-            <p className="text-lg font-semibold">
+            <p className="text-lg m-0 font-semibold">
               {project?.emailCount}
+            </p>
+          </div>
+          <div className="flex flex-col items-center">
+            <p className="text-xs text-muted-foreground">Closed Leads</p>
+            <p className="text-lg m-0 font-semibold">
+              {closedLeads}
             </p>
           </div>
         </div>
