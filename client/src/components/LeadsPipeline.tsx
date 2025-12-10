@@ -14,12 +14,12 @@ const PIPELINE_STAGES = [
   { id: "declined", label: "Declined", color: "border-red-200" },
 ] as const;
 
-interface DragAndDropProps {
+interface LeadsPipelineProps {
   leads: Lead[],
   onUpdateLead: (id: string, status: Lead['status']) => void
 }
 
-export function DragAndDrop({ leads, onUpdateLead }: DragAndDropProps) {
+export function LeadsPipeline({ leads, onUpdateLead }: LeadsPipelineProps) {
   const [draggedLead, setDraggedLead] = useState<Lead | null>(null);
   const { mutate: deleteLead } = useDeleteLead();
 

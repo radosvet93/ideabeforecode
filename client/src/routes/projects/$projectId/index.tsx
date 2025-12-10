@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { DragAndDrop } from '@/components/DragAndDrop';
+import { LeadsPipeline } from '@/components/LeadsPipeline';
 import Header from '@/components/Header';
 import { AnalyticsCardForProject } from '@/components/projects/AnalyticsCardForProject';
 
@@ -24,7 +24,6 @@ function ProjectRoute() {
   const { name, description, emailCount, leads } = project;
 
   const handleUpdateLead = (id: string, status: Lead['status']) => {
-    // optimistic update directly in query cache
     updateLeadStatus.mutate({ id, status });
   };
 
@@ -33,13 +32,11 @@ function ProjectRoute() {
       <Header hasBackButton />
       <div className="p-4 container mx-auto">
         <div className="space-y-8">
-          {/* Header */}
           <div>
             <h2 className="text-3xl font-bold">{name}</h2>
             <p className="text-muted-foreground mt-1">{description}</p>
           </div>
 
-          {/* Analytics cards */}
           <AnalyticsCardForProject leads={leads} emailCount={emailCount} />
 
           <div className='flex justify-between'>
@@ -51,8 +48,7 @@ function ProjectRoute() {
             <LeadForm projectId={projectId} />
           </div>
 
-          {/* DnD Pipeline */}
-          <DragAndDrop leads={leads} onUpdateLead={handleUpdateLead} />
+          <LeadsPipeline leads={leads} onUpdateLead={handleUpdateLead} />
 
         </div>
       </div>
