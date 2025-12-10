@@ -1,10 +1,14 @@
+import { useState } from "react";
 import * as z from "zod";
 import { useForm } from "@tanstack/react-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from "@/components/ui/input-group";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogClose, DialogFooter, DialogHeader, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { Card } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 
 const formSchema = z.object({
   name: z
@@ -17,11 +21,9 @@ const formSchema = z.object({
     .max(100, "Description must be at most 100 characters."),
 });
 
-interface ProjectFormProps {
-  setIsCreating: (creating: boolean) => void,
-}
+const ProjectForm = () => {
+  const [open, setOpen] = useState(false);
 
-const ProjectForm = ({ setIsCreating }: ProjectFormProps) => {
   const form = useForm({
     defaultValues: {
       name: "",
@@ -31,26 +33,46 @@ const ProjectForm = ({ setIsCreating }: ProjectFormProps) => {
       onSubmit: formSchema,
     },
     onSubmit: ({ value }) => {
-      console.log('sumbitting', value);
+      try {
+        console.log('value', value);
+        // createProject({
+        //   ...value
+        // });
 
-      setIsCreating(false);
+        setOpen(false);
+        form.reset();
+
+      } catch (error) {
+        console.log('error', error);
+      }
     }
   });
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
 
-        void form.handleSubmit();
-      }}
-    >
-      <Card className="w-xl flex justify-center m-auto p-6 space-y-4">
-        <CardHeader>
-          <CardTitle>Create new project</CardTitle>
-          <CardDescription>Add your project name and description below</CardDescription>
-        </CardHeader>
-        <CardContent>
+    <Dialog open={open} onOpenChange={setOpen} >
+      <DialogTrigger asChild>
+        <Card
+          className="p-6 flex flex-col items-center justify-center min-h-40 cursor-pointer hover:shadow-lg transition-shadow border-2 border-dashed"
+        >
+          <Plus className="w-8 h-8 text-muted-foreground mb-2" />
+          <p className="font-semibold text-center">New Project</p>
+          <p className="text-xs text-muted-foreground text-center mt-1">Start a new outreach campaign</p>
+        </Card >
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create new project</DialogTitle>
+          <DialogDescription className='mt-0'>Add your project name and description below</DialogDescription>
+        </DialogHeader>
+        <form
+          className='space-y-6'
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            void form.handleSubmit();
+          }}
+        >
           <FieldGroup>
             <form.Field
               name="name"
@@ -114,25 +136,20 @@ const ProjectForm = ({ setIsCreating }: ProjectFormProps) => {
               }}
             />
           </FieldGroup>
-        </CardContent>
-        <CardFooter>
-          <div className="flex gap-2">
-            <Button type="submit" className="flex-1">
-              Create Project
-            </Button>
-            <Button
-              variant="outline"
-              className="flex-1 bg-transparent"
-              onClick={() => {
-                setIsCreating(false);
-              }}
-            >
-              Cancel
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </form>
+          <DialogFooter>
+            <div className="flex gap-2">
+              <Button type="submit" className="flex-1">
+                Create Project
+              </Button>
+              <DialogClose asChild>
+
+                <Button variant={'outline'}>Cancel</Button>
+              </DialogClose>
+            </div>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog >
   );
 };
 

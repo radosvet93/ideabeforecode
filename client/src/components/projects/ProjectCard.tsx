@@ -1,14 +1,15 @@
 import { formatDistanceToNow } from "date-fns";
-import { Card } from "../ui/card";
-import { Button } from "../ui/button";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useGetSingleProject } from "@/hooks/useGetSingleProject";
 
-const ProjectCard = ({ id }: { id: string }) => {
-  const { data: project, isLoading, error } = useGetSingleProject(id);
+interface ProjectCardProps {
+  id: string
+}
 
-  if (isLoading) return 'loading';
-  if (error) return 'something went wrong';
+const ProjectCard = ({ id }: ProjectCardProps) => {
+  const { data: project } = useGetSingleProject(id);
 
   return (
     <Card
@@ -51,7 +52,7 @@ const ProjectCard = ({ id }: { id: string }) => {
           <div>
             <p className="text-xs text-muted-foreground">Emails</p>
             <p className="text-lg font-semibold">
-              0
+              {project?.emailCount}
             </p>
           </div>
         </div>
