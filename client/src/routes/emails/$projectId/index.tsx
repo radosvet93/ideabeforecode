@@ -8,7 +8,8 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { useForm } from '@tanstack/react-form';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from '@/components/ui/select';
-import { EmailToneValues } from '@/types';
+import { EmailToneValues, type EmailTone } from '@/types';
+import { useGenerateEmail } from '@/hooks/lead/useGenerateEmail';
 
 export const Route = createFileRoute('/emails/$projectId/')({
   component: EmailRoute,
@@ -18,6 +19,7 @@ function EmailRoute() {
   const { projectId } = Route.useParams();
 
   const { data: project } = useGetSingleProject(projectId);
+  const { mutate: generateEmail } = useGenerateEmail();
 
   console.log('{project', project);
 
@@ -33,8 +35,29 @@ function EmailRoute() {
       })
     },
     onSubmit: ({ value }) => {
-      // createEmail(value);
-      console.log('value', value);
+      if (!project) return;
+
+      const lead = project.leads.find(lead => lead.id === value.leadId);
+
+      if (!lead) return;
+
+      const emailGenerationFields = {
+        project: {
+          name: project.name,
+          description: project.description
+        },
+        lead: {
+          name: lead.name,
+          email: lead.email,
+          status: lead.status,
+          jobTitle: lead.status,
+          company: lead.company,
+          notes: lead.notes
+        },
+        tone: value.tone as EmailTone
+      };
+
+      generateEmail(emailGenerationFields);
 
       form.reset();
     }

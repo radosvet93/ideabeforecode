@@ -37,5 +37,12 @@ export interface Email {
   createdAt: Date
 }
 
-export type CreateLeadPayload = Omit<Lead, 'id' | 'status' | 'createdAt'>;
-export type CreateProjectPayload = Omit<Project, 'id' | 'createdAt'>;
+type OmitDefaultMeta<T, K extends keyof T = never> = Omit<T, 'id' | 'createdAt' | K>;
+
+export type CreateLeadPayload = OmitDefaultMeta<Lead, 'status'>;
+export type CreateProjectPayload = OmitDefaultMeta<Project>;
+export interface GenerateEmailPayload {
+  project: CreateProjectPayload
+  lead: OmitDefaultMeta<Lead, 'projectId'>,
+  tone: EmailTone
+}
