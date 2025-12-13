@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { getEmailsHandler } from "./controller";
+import { generateEmailHandler, getEmailsHandler } from "./controller";
 
 export const router = Router();
 
 router.get("/", getEmailsHandler);
+router.post("/generate", generateEmailHandler);

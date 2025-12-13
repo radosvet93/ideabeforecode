@@ -4,7 +4,11 @@ import { pgTable, text, uuid, timestamp, pgEnum } from 'drizzle-orm/pg-core';
 import { createSelectSchema } from 'drizzle-zod';
 import { leadsTable } from "../leads/model";
 
-export const toneEnum = pgEnum("tone", ["professional", "friendly", "casual", "urgent"]);
+export const toneEnumValues = ["professional", "friendly", "casual", "urgent"] as const;
+
+export type Tone = typeof toneEnumValues[number];
+
+export const toneEnum = pgEnum("status", toneEnumValues);
 
 export const emailsTable = pgTable("emails", {
   id: uuid('id').primaryKey().defaultRandom(),
