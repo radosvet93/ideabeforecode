@@ -1,4 +1,4 @@
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { emailsSelectSchema, listEmails } from "./model";
 import { emailGenerateSchema } from './schema';
 import { ZodError } from 'zod';
