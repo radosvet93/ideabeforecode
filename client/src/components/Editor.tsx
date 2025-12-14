@@ -3,7 +3,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-import { InitialContentPlugin } from './InitialContentPlugin';
+import { InitialTextContentPlugin } from './InitialTextContentPlugin';
 import { CopyEmailPlugin } from './CopyEmailPlugin';
 
 function onError(error: Error) {
@@ -11,10 +11,10 @@ function onError(error: Error) {
 }
 
 interface EditorProps {
-  html: string;
+  text: string;
 }
 
-export const Editor = ({ html }: EditorProps) => {
+export const Editor = ({ text }: EditorProps) => {
   const initialConfig = {
     namespace: 'EmailEditor',
     onError,
@@ -35,7 +35,7 @@ export const Editor = ({ html }: EditorProps) => {
 
           <HistoryPlugin />
 
-          <InitialContentPlugin html={html} />
+          <InitialTextContentPlugin text={text} />
         </div>
         <CopyEmailPlugin />
       </LexicalComposer>

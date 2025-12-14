@@ -57,7 +57,7 @@ function EmailRoute() {
           name: lead.name,
           email: lead.email,
           status: lead.status,
-          jobTitle: lead.status,
+          jobTitle: lead.jobTitle,
           company: lead.company,
           notes: lead.notes
         },
@@ -194,7 +194,7 @@ function EmailRoute() {
                   <CardTitle className="text-xl font-semibold">Generated Email</CardTitle>
                   <CardDescription className='text-muted-foreground italic'>You can edit the email now</CardDescription>
                   <CardContent className='px-0'>
-                    <Editor html={data.email} />
+                    <Editor text={data.email} />
                   </CardContent>
                 </div>
               )}
