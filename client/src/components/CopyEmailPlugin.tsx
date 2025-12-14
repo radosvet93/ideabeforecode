@@ -1,23 +1,19 @@
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { Copy } from 'lucide-react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { $generateHtmlFromNodes } from '@lexical/html';
 import { $getRoot } from 'lexical';
 
 export function CopyEmailPlugin() {
   const [editor] = useLexicalComposerContext();
 
-  const copyHtml = () => {
-    let html = '';
+  const copyContents = () => {
     let text = '';
 
     editor.update(() => {
-      html = $generateHtmlFromNodes(editor, null);
       text = $getRoot().getTextContent();
     });
 
     const item = new ClipboardItem({
-      'text/html': new Blob([html], { type: 'text/html' }),
       'text/plain': new Blob([text], { type: 'text/plain' }),
     });
 
@@ -25,7 +21,7 @@ export function CopyEmailPlugin() {
   };
 
   return (
-    <Button onClick={copyHtml} className="mt-4 w-content">
+    <Button onClick={copyContents} className="mt-4 w-content">
       <Copy /> Copy Contents
     </Button>
   );
