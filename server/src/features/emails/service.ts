@@ -8,7 +8,7 @@ const toneInstructions = {
   urgent: "Convey urgency and importance. Use compelling language.",
 } as const
 
-export async function generateEmail({ lead, project, tone }: EmailGenerateInput) {
+export async function generateEmailOpenAI({ lead, project, tone }: EmailGenerateInput) {
 
   // TODO: Can even get the web_search_view tool to research the company and person on the internet??
 
@@ -67,4 +67,90 @@ export async function generateEmail({ lead, project, tone }: EmailGenerateInput)
   }
 
   return text;
+}
+
+export const generateEmailLocalModel = async ({ lead, project, tone }: EmailGenerateInput) => {
+
+  const prompt = `
+You are an experienced UK-based product founder writing short, thoughtful outreach emails.
+
+Your goal is to validate interest in a potential product idea before building it.
+This is NOT a sales email.
+
+Writing rules (must follow strictly):
+- Use British English spelling and phrasing (organisation, personalise, programme, etc).
+- Avoid Americanisms and corporate jargon.
+- Do NOT mention "sales", "pitch", "early validation", or "resources".
+- Do NOT over-explain or justify why you are emailing.
+- Avoid buzzwords and generic phrases.
+- Avoid the em dash (—).
+- Keep the tone natural, calm, and human.
+
+Task:
+Write a concise outreach email to the person below.
+The email should briefly introduce the idea, show relevance to their role, and invite a short reply or quick chat.
+
+Lead details:
+- Name: ${lead.name}
+- Company: ${lead.company || "Not specified"}
+- Job Title: ${lead.jobTitle || "Not specified"}
+- Notes: ${lead.notes || "Not provided"}
+
+Product idea:
+- Name: ${project.name}
+- Description: ${project.description}
+
+Tone guidance: ${toneInstructions[tone]}
+
+Length:
+- Maximum 120–150 words total.
+
+Output format (strict):
+Return plain text only.
+No HTML.
+No markdown.
+No explanations.
+
+Format exactly like this:
+
+Subject: <one clear, human subject line>
+
+Body:
+<email body>
+
+End the email naturally with a polite sign-off.
+Do not include a signature block.
+`.trim();
+
+  const response = await fetch("http://localhost:11434/api/generate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "llama3.1:8b-instruct-q4_K_M",
+      prompt,
+      stream: false,
+      options: {
+        "temperature": 0.65,
+        "top_p": 0.9,
+        "num_predict": 220
+      }
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Ollama request failed: ${response.status}`);
+  }
+
+  const data: {
+    response?: string;
+    done?: boolean;
+  } = await response.json();
+
+  if (!data.response) {
+    throw new Error("Ollama returned an empty response.");
+  }
+
+  return data.response.trim();
 }

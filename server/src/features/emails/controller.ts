@@ -3,7 +3,7 @@ import { emailsSelectSchema, listEmails } from "./model";
 import { emailGenerateSchema } from './schema';
 import { ZodError } from 'zod';
 import { formatZodErrors } from 'src/utils/validators';
-import { generateEmail } from 'src/features/emails/service';
+import { generateEmailLocalModel } from 'src/features/emails/service';
 
 export const getEmailsHandler = async ({ res }: { res: Response }) => {
   const emailDB = await listEmails();
@@ -20,9 +20,9 @@ export const generateEmailHandler = async (req: Request, res: Response) => {
 
     // TODO: Save it in DB??? -> might need save button on FE to store it, instead of directly doing it
 
-    const text = await generateEmail({ lead, project, tone });
+    const response = await generateEmailLocalModel({ lead, project, tone });
 
-    res.json({ email: text });
+    res.json({ email: response });
   } catch (error) {
     if (error instanceof ZodError) {
       return res.status(400).json({
