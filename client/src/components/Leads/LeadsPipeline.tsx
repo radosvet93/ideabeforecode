@@ -3,7 +3,7 @@ import type { Lead } from "@/types";
 import { GripVertical, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { useDeleteLead } from "@/hooks/lead/useDeleteLead";
 
 const PIPELINE_STAGES = [

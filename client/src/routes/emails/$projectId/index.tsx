@@ -2,7 +2,7 @@ import z from 'zod';
 import { createFileRoute } from '@tanstack/react-router';
 import Header from '@/components/Header';
 import { useGetSingleProject } from '@/hooks/project/useGetSingleProject';
-import LeadsTable from '@/components/LeadsTable';
+import LeadsTable from '@/components/Leads/LeadsTable';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { useForm } from '@tanstack/react-form';
@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGr
 import { EmailToneValues, type EmailTone } from '@/types';
 import { useGenerateEmail } from '@/hooks/lead/useGenerateEmail';
 import { AlertCircleIcon, Loader2 } from 'lucide-react';
-import { Editor } from '@/components/Editor';
+import { Editor } from '@/components/Editor/Editor';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export const Route = createFileRoute('/emails/$projectId/')({

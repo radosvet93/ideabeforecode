@@ -1,12 +1,12 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { LeadsPipeline } from '@/components/LeadsPipeline';
+import { LeadsPipeline } from '@/components/Leads/LeadsPipeline';
 import Header from '@/components/Header';
-import { AnalyticsCardForProject } from '@/components/projects/AnalyticsCardForProject';
+import { AnalyticsCardForProject } from '@/components/Projects/AnalyticsCardForProject';
 
 import { useGetSingleProject } from '@/hooks/project/useGetSingleProject';
 import { useUpdateLeadStatus } from '@/hooks/lead/useUpdatedLeadStatus';
 import type { Lead } from '@/types';
-import { LeadForm } from '@/components/LeadForm';
+import { LeadForm } from '@/components/Leads/LeadForm';
 import { Button } from '@/components/ui/button';
 import { Mail } from 'lucide-react';
 
