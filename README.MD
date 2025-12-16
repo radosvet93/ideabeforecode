@@ -30,7 +30,6 @@ On root
 
 ## Roadmap
 
-- Using local LLMs for generating the emails, cheaper cost
 - Send email from the app nodemail or something else
 - Creating inboxes per project
 - LLM find leads
