@@ -22,14 +22,15 @@ Backend: Express, TypeScript, Drizzle ORM, Neon Postgres
 `pnpm install`
 
 - Server
-`cd server`
-`pnpm install`
+```cd server```
+```pnpm install```
 
 On root
 `pnpm start` - to start both server and client
 
 ## Roadmap
 
+- have a brutal opinion LLM when creating a project
 - Send email from the app nodemail or something else
 - Creating inboxes per project
 - LLM find leads
