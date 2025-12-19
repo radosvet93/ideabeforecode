@@ -6,7 +6,7 @@ const Header = ({ hasBackButton = false }: { hasBackButton?: boolean }) => {
     <header className="bg-primary text-primary-foreground p-4">
       <div className="flex justify-between">
         <Link to="/">
-          <h1>Lead Flow</h1>
+          <h1>Idea Before Code</h1>
         </Link>
         {hasBackButton && (
           <Link to="/">

@@ -1,4 +1,4 @@
-# Lead Flow
+# Idea Before Code
 
 ## Setup
 
