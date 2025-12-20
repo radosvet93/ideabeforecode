@@ -35,6 +35,12 @@ export const LeadsTableColumns: ColumnDef<Lead>[] = [
   },
 
   {
+    accessorKey: "phone",
+    header: "Phone",
+    cell: ({ row }) => <span>{row.getValue("phone")}</span>,
+  },
+
+  {
     accessorKey: "company",
     header: "Company",
     cell: ({ row }) => <span>{row.getValue("company")}</span>,

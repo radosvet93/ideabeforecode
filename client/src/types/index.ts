@@ -13,6 +13,7 @@ export interface Project {
 export interface Lead {
   id: string,
   name: string,
+  phone: string,
   email: string,
   status: Status,
   jobTitle: string,

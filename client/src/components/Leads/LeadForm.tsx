@@ -16,6 +16,7 @@ const formSchema = z.object({
     .max(32, "Name must be at most 32 characters."),
   company: z.string().min(2, 'Company must be at least 2 characters.'),
   email: z.email(),
+  phone: z.string(),
   jobTitle: z.string(),
   notes: z.string().max(300, "Notes must be at most 300 characters."),
 });
@@ -31,6 +32,7 @@ export const LeadForm = ({ projectId }: LeadFormProps) => {
   const form = useForm({
     defaultValues: {
       name: "",
+      phone: "",
       company: "",
       email: "",
       jobTitle: "",
@@ -86,6 +88,31 @@ export const LeadForm = ({ projectId }: LeadFormProps) => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
                       placeholder="Name"
+                      autoComplete="off"
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            />
+            <form.Field
+              name="phone"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>Phone</FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      placeholder="07123456789"
                       autoComplete="off"
                     />
                     {isInvalid && (
