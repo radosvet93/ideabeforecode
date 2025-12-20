@@ -8,7 +8,7 @@ export const toneEnumValues = ["professional", "friendly", "casual", "urgent"] a
 
 export type Tone = typeof toneEnumValues[number];
 
-export const toneEnum = pgEnum("status", toneEnumValues);
+export const toneEnum = pgEnum("tone", toneEnumValues);
 
 export const emailsTable = pgTable("emails", {
   id: uuid('id').primaryKey().defaultRandom(),
