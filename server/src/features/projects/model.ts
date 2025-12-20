@@ -29,6 +29,7 @@ export const projectWithLeads = (id: string) =>
     lead: {
       id: leadsTable.id,
       name: leadsTable.name,
+      phone: leadsTable.phone,
       email: leadsTable.email,
       company: leadsTable.company,
       jobTitle: leadsTable.jobTitle,

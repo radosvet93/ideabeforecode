@@ -4,6 +4,7 @@ import { statusEnumValues } from "./model";
 export const leadCreateSchema = z.object({
   email: z.email(),
   name: z.string().min(1, "Name is required"),
+  phone: z.string(),
   company: z.string().min(1, "Company is required"),
   jobTitle: z.string().optional(),
   notes: z.string().optional(),

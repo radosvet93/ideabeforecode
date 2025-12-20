@@ -15,6 +15,7 @@ export const leadsTable = pgTable("leads", {
   id: uuid('id').primaryKey().defaultRandom(),
   email: text('email').notNull().unique(),
   name: text('name'),
+  phone: text('phone'),
   company: text('company'),
   jobTitle: text('job_title'),
   status: statusEnum('status').default('new'),
