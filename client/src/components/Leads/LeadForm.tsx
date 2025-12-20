@@ -14,8 +14,11 @@ const formSchema = z.object({
     .string()
     .min(2, "Name must be at least 2 characters.")
     .max(32, "Name must be at most 32 characters."),
-  company: z.string().min(2, 'Company must be at least 2 characters.'),
-  email: z.email(),
+  company: z.string(),
+  email: z.union([
+    z.literal(''),
+    z.email(),
+  ]),
   phone: z.string(),
   jobTitle: z.string(),
   notes: z.string().max(300, "Notes must be at most 300 characters."),
@@ -220,7 +223,7 @@ export const LeadForm = ({ projectId }: LeadFormProps) => {
                       />
                       <InputGroupAddon align="block-end">
                         <InputGroupText className="tabular-nums">
-                          {field.state.value.length}/100 characters
+                          {field.state.value.length}/300 characters
                         </InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>

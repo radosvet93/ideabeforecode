@@ -2,10 +2,13 @@ import z from "zod";
 import { statusEnumValues } from "./model";
 
 export const leadCreateSchema = z.object({
-  email: z.email(),
+  email: z.union([
+    z.literal(''),
+    z.email(),
+  ]),
   name: z.string().min(1, "Name is required"),
   phone: z.string(),
-  company: z.string().min(1, "Company is required"),
+  company: z.string(),
   jobTitle: z.string().optional(),
   notes: z.string().optional(),
   status: z.enum(statusEnumValues).optional(),
