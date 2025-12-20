@@ -13,7 +13,7 @@ export const statusEnum = pgEnum("status", statusEnumValues);
 
 export const leadsTable = pgTable("leads", {
   id: uuid('id').primaryKey().defaultRandom(),
-  email: text('email').notNull().unique(),
+  email: text('email'), // Sometimes it's not possible to find the email 
   name: text('name'),
   phone: text('phone'),
   company: text('company'),
