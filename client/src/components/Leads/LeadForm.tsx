@@ -17,7 +17,7 @@ const formSchema = z.object({
   company: z.string().min(2, 'Company must be at least 2 characters.'),
   email: z.email(),
   jobTitle: z.string(),
-  notes: z.string().max(100, "Notes must be at most 100 characters."),
+  notes: z.string().max(300, "Notes must be at most 300 characters."),
 });
 
 interface LeadFormProps {

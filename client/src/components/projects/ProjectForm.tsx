@@ -14,12 +14,11 @@ import { useCreateProject } from '@/hooks/project/useCreateProject';
 const formSchema = z.object({
   name: z
     .string()
-    .min(5, "Project name must be at least 5 characters.")
-    .max(32, "Project name must be at most 32 characters."),
+    .min(5, "Project name must be at least 5 characters."),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters.")
-    .max(100, "Description must be at most 100 characters."),
+    .max(300, "Description must be at most 300 characters."),
 });
 
 const ProjectForm = () => {
@@ -115,7 +114,7 @@ const ProjectForm = () => {
                       />
                       <InputGroupAddon align="block-end">
                         <InputGroupText className="tabular-nums">
-                          {field.state.value.length}/100 characters
+                          {field.state.value.length}/300 characters
                         </InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
