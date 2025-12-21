@@ -68,7 +68,10 @@ export const uploadLeadsHandler = async (req: Request, res: Response) => {
 
     await bulkCreateLeads(validLeads);
 
-    return res.status(201);
+    return res.status(201).json({
+      rowsCount: validLeads.length,
+      errors
+    });
 
   } catch (error) {
     if (error instanceof ZodError) {
