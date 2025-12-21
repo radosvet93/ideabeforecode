@@ -2,12 +2,9 @@ import z from "zod";
 import { statusEnumValues } from "./model";
 
 export const leadCreateSchema = z.object({
-  email: z.union([
-    z.literal(''),
-    z.email(),
-  ]),
+  email: z.email().or(z.literal('')),
   name: z.string().min(1, "Name is required"),
-  phone: z.string(),
+  phone: z.string().or(z.literal('')),
   company: z.string(),
   jobTitle: z.string().optional(),
   notes: z.string().optional(),
@@ -20,3 +17,15 @@ export type LeadCreateInput = z.infer<typeof leadCreateSchema>;
 export const leadStatusUpdateSchema = z.object({
   status: z.enum(statusEnumValues, 'Invalid status provided.')
 });
+
+export const csvUploadSchema = leadCreateSchema.pick({
+  'name': true,
+  'email': true,
+  'phone': true
+});
+
+export type CsvLead = z.infer<typeof csvUploadSchema>;
+
+export type ValidLeads = CsvLead & {
+  projectId: string
+}
