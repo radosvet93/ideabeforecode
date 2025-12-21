@@ -1,9 +1,10 @@
 import { db } from "../../db/setup";
-import { pgTable, text, uuid, timestamp, pgEnum } from 'drizzle-orm/pg-core';
+import { pgTable, text, uuid, timestamp, pgEnum, unique } from 'drizzle-orm/pg-core';
 import { createSelectSchema, createUpdateSchema, createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { projectsTable } from "../projects/model";
 import { eq } from "drizzle-orm";
+import type { ValidLeads } from "./schema";
 
 export const statusEnumValues = ["new", "contacted", "interested", "closed", "declined"] as const;
 
@@ -24,7 +25,9 @@ export const leadsTable = pgTable("leads", {
     .notNull()
     .references(() => projectsTable.id, { onDelete: "cascade" }),
   createdAt: timestamp('created_at').defaultNow()
-});
+}, (t) => ({
+  uniqueLead: unique().on(t.projectId, t.name)
+}));
 
 export const leadsSelectSchema = createSelectSchema(leadsTable)
 export const leadsUpdateSchema = createUpdateSchema(leadsTable)
@@ -42,3 +45,5 @@ export const listLeadsByProject = (projectId: string) => db.select()
 export const updateLeadStatus = (id: string, status: Status) => db.update(leadsTable).set({ status }).where(eq(leadsTable.id, id)).returning();
 
 export const deleteLead = (id: string) => db.delete(leadsTable).where(eq(leadsTable.id, id)).returning();
+
+export const bulkCreateLeads = (leads: ValidLeads[]) => db.insert(leadsTable).values(leads).onConflictDoNothing({ target: [leadsTable.projectId, leadsTable.name] });
