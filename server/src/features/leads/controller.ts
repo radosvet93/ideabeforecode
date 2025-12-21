@@ -1,8 +1,9 @@
 import { ZodError } from "zod";
-import { createLead, deleteLead, leadsSelectSchema, listLeads, updateLeadStatus } from "./model";
-import { leadCreateSchema, leadStatusUpdateSchema } from "./schema";
+import { bulkCreateLeads, createLead, deleteLead, leadsSelectSchema, listLeads, updateLeadStatus } from "./model";
+import { csvUploadSchema, leadCreateSchema, leadStatusUpdateSchema, type CsvLead, type ValidLeads } from "./schema";
 import { formatZodErrors } from "src/utils/validators";
 import type { Request, Response } from "express";
+import { parse } from 'csv-parse/sync';
 
 export const createLeadHandler = async (req: Request, res: Response) => {
   try {
@@ -25,12 +26,50 @@ export const createLeadHandler = async (req: Request, res: Response) => {
 
 export const uploadLeadsHandler = async (req: Request, res: Response) => {
   try {
-    console.log('body', req.body)
-    console.log('params', req.query.projectId);
-    // TODO: parsed the csv and populate DB with fields
-    // E.g. name, phone, email, etc...
 
-    res.status(201).json('createdDto');
+    if (!req.headers['content-type']?.includes('csv')) {
+      return res.status(400).send('Invalid file type');
+    }
+
+    const projectId = req.query.projectId as string
+
+    if (!projectId) {
+      return res.status(400).send('Please use the projectId in the query strings');
+    }
+
+    const csvFile = req.body as Buffer;
+    const csvText = csvFile.toString('utf-8');
+
+    const csvContentRecords = parse<CsvLead>(csvText, {
+      columns: true,
+      skip_empty_lines: true,
+      trim: true,
+    });
+
+    const validLeads: ValidLeads[] = [];
+    const errors: { row: number, errors: string[] }[] = [];
+
+    csvContentRecords.forEach((record, index) => {
+      const result = csvUploadSchema.safeParse(record);
+
+      if (!result.success) {
+        errors.push({
+          row: index + 1,
+          errors: result.error.issues.map((i) => i.message),
+        });
+        return;
+      }
+
+      validLeads.push({
+        ...result.data,
+        projectId
+      })
+    });
+
+    await bulkCreateLeads(validLeads);
+
+    return res.status(201);
+
   } catch (error) {
     if (error instanceof ZodError) {
       return res.status(400).json({
