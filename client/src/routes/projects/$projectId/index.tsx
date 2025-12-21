@@ -8,7 +8,10 @@ import { useUpdateLeadStatus } from '@/hooks/lead/useUpdatedLeadStatus';
 import type { Lead } from '@/types';
 import { LeadForm } from '@/components/Leads/LeadForm';
 import { Button } from '@/components/ui/button';
-import { Mail } from 'lucide-react';
+import { Import, Mail } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useRef, type ChangeEvent } from 'react';
+import { useUploadLeads } from '@/hooks/lead/useUploadLeads';
 
 export const Route = createFileRoute('/projects/$projectId/')({
   component: ProjectRoute,
@@ -20,6 +23,9 @@ function ProjectRoute() {
   const { data: project, isLoading } = useGetSingleProject(projectId);
 
   const updateLeadStatus = useUpdateLeadStatus();
+  const { mutate: uploadLeads } = useUploadLeads();
+
+  const importLeadsRef = useRef<HTMLInputElement | null>(null);
 
   if (isLoading || !project) return <div>Loading…</div>;
 
@@ -27,6 +33,19 @@ function ProjectRoute() {
 
   const handleUpdateLead = (id: string, status: Lead['status']) => {
     updateLeadStatus.mutate({ id, status });
+  };
+
+  const handleImportLeadsClick = () => {
+    importLeadsRef?.current?.click();
+  };
+
+  const handleImportLeads = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    uploadLeads({ file, projectId });
+    e.target.value = '';
   };
 
   return (
@@ -48,6 +67,10 @@ function ProjectRoute() {
             </div>
 
             <div className='space-x-2'>
+              <Button onClick={handleImportLeadsClick}><Import />
+                Import Leads
+              </Button>
+              <Input onChange={handleImportLeads} ref={importLeadsRef} id="importLeads" type="file" className='hidden' accept=".csv" />
               <LeadForm projectId={projectId} />
               <Link
                 key={project.id}
