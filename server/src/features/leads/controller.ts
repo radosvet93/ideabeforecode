@@ -23,6 +23,25 @@ export const createLeadHandler = async (req: Request, res: Response) => {
   }
 }
 
+export const uploadLeadsHandler = async (req: Request, res: Response) => {
+  try {
+    console.log('body', req.body)
+    console.log('params', req.query.projectId);
+    // TODO: parsed the csv and populate DB with fields
+    // E.g. name, phone, email, etc...
+
+    res.status(201).json('createdDto');
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        errors: formatZodErrors(error)
+      });
+    }
+
+    res.status(500).json({ error: "Failed to upload leads." });
+  }
+}
+
 export const getLeadsHandler = async ({ res }: { res: Response }) => {
   try {
     const leadDB = await listLeads();
