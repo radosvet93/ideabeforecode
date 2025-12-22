@@ -4,8 +4,6 @@ import Header from '@/components/Header';
 import { AnalyticsCardForProject } from '@/components/Projects/AnalyticsCardForProject';
 
 import { useGetSingleProject } from '@/hooks/project/useGetSingleProject';
-import { useUpdateLeadStatus } from '@/hooks/lead/useUpdatedLeadStatus';
-import type { Lead } from '@/types';
 import { LeadForm } from '@/components/Leads/LeadForm';
 import { Button } from '@/components/ui/button';
 import { Import, Mail } from 'lucide-react';
@@ -22,7 +20,6 @@ function ProjectRoute() {
 
   const { data: project, isLoading } = useGetSingleProject(projectId);
 
-  const updateLeadStatus = useUpdateLeadStatus();
   const { mutate: uploadLeads } = useUploadLeads();
 
   const importLeadsRef = useRef<HTMLInputElement | null>(null);
@@ -30,10 +27,6 @@ function ProjectRoute() {
   if (isLoading || !project) return <div>Loading…</div>;
 
   const { name, description, emailCount, leads } = project;
-
-  const handleUpdateLead = (id: string, status: Lead['status']) => {
-    updateLeadStatus.mutate({ id, status });
-  };
 
   const handleImportLeadsClick = () => {
     importLeadsRef?.current?.click();
@@ -84,7 +77,7 @@ function ProjectRoute() {
             </div>
           </div>
 
-          <LeadsPipeline leads={leads} onUpdateLead={handleUpdateLead} />
+          <LeadsPipeline leads={leads} />
 
         </div>
       </div>

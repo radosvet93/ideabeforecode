@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "../ui/button";
 import { useDeleteLead } from "@/hooks/lead/useDeleteLead";
+import { useUpdateLeadStatus } from '@/hooks/lead/useUpdatedLeadStatus';
 
 const PIPELINE_STAGES = [
   { id: "new", label: "New", color: "border-slate-200" },
@@ -16,12 +17,12 @@ const PIPELINE_STAGES = [
 
 interface LeadsPipelineProps {
   leads: Lead[],
-  onUpdateLead: (id: string, status: Lead['status']) => void
 }
 
-export function LeadsPipeline({ leads, onUpdateLead }: LeadsPipelineProps) {
+export function LeadsPipeline({ leads }: LeadsPipelineProps) {
   const [draggedLead, setDraggedLead] = useState<Lead | null>(null);
   const { mutate: deleteLead } = useDeleteLead();
+  const { mutate: updateLeadStatus } = useUpdateLeadStatus();
 
   const leadsByStatus = PIPELINE_STAGES.map((stage) => ({
     ...stage,
@@ -41,7 +42,7 @@ export function LeadsPipeline({ leads, onUpdateLead }: LeadsPipelineProps) {
   const handleDrop = (e: React.DragEvent, status: Lead['status']) => {
     e.preventDefault();
     if (draggedLead) {
-      onUpdateLead(draggedLead.id, status);
+      updateLeadStatus({ id: draggedLead.id, status });
       setDraggedLead(null);
     }
   };
