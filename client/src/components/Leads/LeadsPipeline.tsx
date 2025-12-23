@@ -1,11 +1,8 @@
 import { useState } from "react";
 import type { Lead } from "@/types";
-import { GripVertical, Trash2 } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "../ui/button";
 import { useDeleteLead } from "@/hooks/lead/useDeleteLead";
 import { useUpdateLeadStatus } from '@/hooks/lead/useUpdatedLeadStatus';
+import LeadsColumn from "./LeadsColumn";
 
 const PIPELINE_STAGES = [
   { id: "new", label: "New", color: "border-slate-200" },
@@ -55,54 +52,14 @@ export function LeadsPipeline({ leads }: LeadsPipelineProps) {
     <div className="overflow-x-auto pb-6">
       <div className="flex gap-4 min-w-max">
         {leadsByStatus.map((column) => (
-          <div
+          <LeadsColumn
             key={column.id}
-            className={`p-4 rounded-2xl flex-1 w-50 bg-slate-50`}
+            column={column}
+            onDragStart={handleDragStart}
             onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, column.id)}
-          >
-            <div className="mb-4">
-              <h3 className="text-sm font-semibold flex items-center gap-2">
-                {column.label}
-                <Badge variant="secondary">{column.leads.length}</Badge>
-              </h3>
-            </div>
-
-            <div className="space-y-3">
-              {column.leads.map((lead) => (
-                <Card
-                  key={lead.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, lead)}
-                  className={`p-2 cursor-move hover:shadow-lg transition-shadow border-l-4 ${column.color}`}
-                >
-                  <div className="flex items-start gap-2">
-                    <GripVertical className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
-                    <div className="flex flex-1 min-w-0 justify-between">
-                      <div>
-                        <h4 className="font-medium">{lead.name}</h4>
-                        <p className="text-sm text-muted-foreground m-0 line-clamp-3">{lead.notes}</p>
-                        <p className="text-xs italic text-muted-foreground m-0">{lead.jobTitle} at {lead.company}</p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDeleteLead(lead.id, lead.projectId)}
-                      >
-                        <Trash2 className='w-h h-4 text-red-500' />
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-
-              {column.leads.length === 0 && (
-                <div className="h-32 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-muted-foreground text-sm">
-                  Drop leads here
-                </div>
-              )}
-            </div>
-          </div>
+            onDrop={handleDrop}
+            onDelete={handleDeleteLead}
+          />
         ))}
       </div>
     </div>
