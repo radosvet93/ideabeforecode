@@ -56,6 +56,7 @@ function EmailRoute() {
         lead: {
           name: lead.name,
           email: lead.email,
+          phone: lead.phone,
           status: lead.status,
           jobTitle: lead.jobTitle,
           company: lead.company,
