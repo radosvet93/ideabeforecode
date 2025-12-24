@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import { AnalyticsCardForProject } from '@/components/Projects/AnalyticsCardForProject';
 
 import { useGetSingleProject } from '@/hooks/project/useGetSingleProject';
-import { LeadForm } from '@/components/Leads/LeadForm';
+import { CreateLeadForm } from '@/components/Leads/CreateLeadForm';
 import { Button } from '@/components/ui/button';
 import { Import, Mail } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -64,7 +64,7 @@ function ProjectRoute() {
                 Import Leads
               </Button>
               <Input onChange={handleImportLeads} ref={importLeadsRef} id="importLeads" type="file" className='hidden' accept=".csv" />
-              <LeadForm projectId={projectId} />
+              <CreateLeadForm projectId={projectId} />
               <Link
                 key={project.id}
                 to="/emails/$projectId"

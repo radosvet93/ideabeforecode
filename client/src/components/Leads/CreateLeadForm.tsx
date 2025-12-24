@@ -28,7 +28,7 @@ interface LeadFormProps {
   projectId: string
 }
 
-export const LeadForm = ({ projectId }: LeadFormProps) => {
+export const CreateLeadForm = ({ projectId }: LeadFormProps) => {
   const [open, setOpen] = useState(false);
   const { mutate: createLead } = useCreateLead();
 
