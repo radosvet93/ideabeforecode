@@ -18,10 +18,9 @@ export const leadStatusUpdateSchema = z.object({
   status: z.enum(statusEnumValues, 'Invalid status provided.')
 });
 
-export const csvUploadSchema = leadCreateSchema.pick({
-  'name': true,
-  'email': true,
-  'phone': true
+export const csvUploadSchema = leadCreateSchema.omit({
+  status: true,
+  projectId: true
 });
 
 export type CsvLead = z.infer<typeof csvUploadSchema>;
